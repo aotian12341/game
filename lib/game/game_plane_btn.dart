@@ -11,7 +11,6 @@ import 'package:plane/game/game_view.dart';
 
 import 'game_sprite_btn.dart';
 
-// 右下角的子弹控制UI
 class GamePlaneBtn extends PositionComponent with HasGameRef<GameView> {
   final Function onIndexChange;
 
@@ -23,10 +22,8 @@ class GamePlaneBtn extends PositionComponent with HasGameRef<GameView> {
 
   @override
   Future<void> onLoad() async {
-    // 左右箭头
     final image = await Flame.images.load("ui/page-arrow.png");
 
-    // 数字
     numbers = SpriteSheet.fromColumnsAndRows(
         image: await Flame.images.load("ui/ranking-num02.png"),
         columns: 10,
@@ -74,13 +71,26 @@ class GamePlaneBtn extends PositionComponent with HasGameRef<GameView> {
 
     setMultiple();
 
-    // 设置层级
     priority = 998;
 
     return super.onLoad();
   }
 
-  // 更新子弹等级
+  @override
+  void render(Canvas canvas) {
+    super.render(canvas);
+
+    // canvas.save();
+    // canvas.drawRect(
+    //     Rect.fromLTWH(0, 0, size.x, size.y),
+    //     Paint()
+    //       ..color = Colors.red
+    //       ..style = PaintingStyle.stroke
+    //       ..strokeWidth = 5);
+    //
+    // canvas.restore();
+  }
+
   void setMultiple() {
     final temp = GameController().multipleList[GameController().planeIndex];
     final str = "$temp".split("");

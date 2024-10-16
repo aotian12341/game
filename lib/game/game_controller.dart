@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:convert';
 
 import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +6,7 @@ import 'package:plane/game/enemy_info.dart';
 import 'package:plane/game/game_config.dart';
 import 'package:plane/game/game_dialog.dart';
 import 'package:plane/game/game_enemy.dart';
+import 'package:plane/game/game_server.dart';
 import 'package:plane/game/sound_controller.dart';
 
 import 'game_hero.dart';
@@ -24,7 +25,9 @@ class GameController {
   }
 
   // 私有构造函数
-  GameController._internal() {}
+  GameController._internal() {
+    GameServer().messageBack(onMessageBack);
+  }
 
   // 子弹的索引
   int planeIndex = 0;
@@ -66,7 +69,7 @@ class GameController {
   final planeScoreList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   // 敌机池
-  final enemyList = <EnemyInfo>[];
+  final enemyList = <GameEnemy>[];
 
   // 游戏控制对象
   late FlameGame game;
@@ -104,44 +107,11 @@ class GameController {
   }
 
   // 创建敌机
-  void createEnemy() async {
-    // 游戏暂停时不生成
-    if (isRunning) {
-      if (enemyList.length < 3) {
-        // 随机数判断生成敌机数据
-        int total = 100;
-        int index = 0;
-        final temp = Random().nextInt(total);
-        EnemyInfo enemyInfo = EnemyInfo();
-        if (temp >= 97) {
-          // 添加大灰机
-          index = 8 + Random().nextInt(2);
-          enemyInfo = GameConfig.enemyData[index];
-        } else if (temp > 77 && temp < 97) {
-          // 添加中灰机
-          index = 6 + Random().nextInt(3);
-          enemyInfo = GameConfig.enemyData[index];
-        } else {
-          // 添加小灰机
-          index = Random().nextInt(6);
-          enemyInfo = GameConfig.enemyData[index];
-        }
-
-        game.add(GameEnemy(
-            enemyInfo: enemyInfo, multiple: multipleList[planeIndex]));
-
-        enemyList.add(enemyInfo);
-      }
-    }
-
-    // 如果不够3架飞机，就一直生成
-    int duration = GameConfig.enemyCreateSpeed;
-    if (enemyList.length <= 3) {
-      duration = 0;
-    }
-    await Future.delayed(Duration(seconds: duration));
-
-    createEnemy();
+  void createEnemy(EnemyInfo enemyInfo) async {
+    final enemy =
+        GameEnemy(enemyInfo: enemyInfo, multiple: multipleList[planeIndex]);
+    enemyList.add(enemy);
+    game.add(enemy);
   }
 
   // 敌机爆炸💥后，在敌机池中去掉
@@ -151,35 +121,16 @@ class GameController {
 
   // 敌机爆炸触发
   void onEnemyBoom(enemy) {
-    final multiple = enemy["multiple"] as int;
-
-    final planeScore = enemy["score"] as int;
-
-    score += multiple * planeScore;
-
-    if (onScoreChange != null) {
-      onScoreChange!();
-    }
+    GameServer().shootEnemy(enemy);
   }
 
-  // 玩家被大众后触发
+  // 玩家被打中后触发
   void onHeroHit(bullet) {
     final multiple = bullet["multiple"] as int;
 
     final planeScore = bullet["score"] as int;
 
-    score -= multiple * planeScore;
-
-    if (score <= 0) {
-      score = 0;
-      isRunning = false;
-
-      game.add(GameDialog(onBack: () {}, type: 2));
-    }
-
-    if (onScoreChange != null) {
-      onScoreChange!();
-    }
+    GameServer().onHit({"score": planeScore * multiple});
   }
 
   // 设置分数监听器
@@ -200,6 +151,55 @@ class GameController {
     score = 1000;
     SoundController().playBg();
     hero.shoot();
-    createEnemy();
+    // createEnemy();
+
+    // 进入游戏
+    GameServer().enterRoom();
+  }
+
+  // 消息监听
+  void onMessageBack(value) {
+    final data = json.decode(value);
+    if (data['type'] == "createEnemy") {
+      final str = json.decode(data['data']);
+      final enemy = EnemyInfo.create(str);
+      EnemyInfo info = EnemyInfo();
+      for (final item in GameConfig.enemyData) {
+        if (item.type == enemy.type) {
+          info = item;
+          info.id = enemy.id;
+        }
+      }
+      createEnemy(info);
+    } else if (data['type'] == 'boom') {
+      final info = json.decode(data['data']);
+      for (final enemy in enemyList) {
+        if (info['id'] == enemy.enemyInfo.id) {
+          if (!enemy.isDeath) {
+            enemy.boom();
+          }
+        }
+      }
+    } else if (data['type'] == 'hit') {
+      final info = json.decode(data['data']);
+      final scoreBack = info['score'] as int;
+
+      score -= scoreBack;
+
+      if (score <= 0) {
+        score = 0;
+        isRunning = false;
+
+        game.add(GameDialog(onBack: () {}, type: 2));
+      }
+
+      if (onScoreChange != null) {
+        onScoreChange!();
+      }
+    } else if (data['type'] == 'shoot') {
+      for (final enemy in enemyList) {
+        enemy.shootBig();
+      }
+    } else if (data['type'] == 'charge') {}
   }
 }

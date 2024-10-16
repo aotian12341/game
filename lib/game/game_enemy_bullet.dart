@@ -29,17 +29,17 @@ class GameEnemyBullet extends PositionComponent
 
   @override
   Future<void> onLoad() async {
-    // var image = await Flame.images.load(PlaneImages.bulletEnemy[0]);
-    //
-    // size = Vector2(8.w, 28.w);
-    // position = Vector2(pos.x - size.x / 2, pos.y);
-    // add(SpriteComponent(sprite: Sprite(image), size: size));
-    //
-    // ShapeHitbox hitBox = RectangleHitbox();
-    //
-    // add(hitBox);
-    //
-    // priority = 10;
+    var image = await Flame.images.load(PlaneImages.bulletEnemy[0]);
+
+    size = Vector2(8.w, 28.w);
+    position = Vector2(pos.x - size.x / 2, pos.y);
+    add(SpriteComponent(sprite: Sprite(image), size: size));
+
+    ShapeHitbox hitBox = RectangleHitbox();
+
+    add(hitBox);
+
+    priority = 10;
 
     return super.onLoad();
   }
@@ -47,31 +47,31 @@ class GameEnemyBullet extends PositionComponent
   @override
   void update(double dt) {
     super.update(dt);
-    // if (!GameController().isRunning) {
-    //   return;
-    // }
-    //
-    // var moveAngle = a ?? -pi;
-    //
-    // if (!isStop) {
-    //   var vs = dt * GameConfig.enemyBulletSpeed;
-    //   var vy = sin(pi / 2 - moveAngle) * vs;
-    //   var vx = cos(pi / 2 - moveAngle) * vs;
-    //
-    //   position = Vector2(position.x + vx, position.y - vy);
-    //
-    //   if (position.y > game.size.y || position.y < 0) {
-    //     moveAngle = pi - moveAngle;
-    //     angle = moveAngle;
-    //   } else if (position.x < 0 || position.x > game.size.x) {
-    //     moveAngle = 2 * pi - moveAngle;
-    //     angle = moveAngle;
-    //   }
-    // }
-    //
-    // if (position.y > game.size.y) {
-    //   removeFromParent();
-    // }
+    if (!GameController().isRunning) {
+      return;
+    }
+
+    var moveAngle = a ?? -pi;
+
+    if (!isStop) {
+      var vs = dt * GameConfig.enemyBulletSpeed;
+      var vy = sin(pi / 2 - moveAngle) * vs;
+      var vx = cos(pi / 2 - moveAngle) * vs;
+
+      position = Vector2(position.x + vx, position.y - vy);
+
+      if (position.y > game.size.y || position.y < 0) {
+        moveAngle = pi - moveAngle;
+        angle = moveAngle;
+      } else if (position.x < 0 || position.x > game.size.x) {
+        moveAngle = 2 * pi - moveAngle;
+        angle = moveAngle;
+      }
+    }
+
+    if (position.y > game.size.y) {
+      removeFromParent();
+    }
   }
 
   @override

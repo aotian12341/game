@@ -44,7 +44,6 @@ class GameConfig {
   // 梅花子弹生成速度
   static int enemyBulletSnowCreateSpeed = 2000;
 
-  // 敌机数据
   static List<EnemyInfo> enemyData = [
     EnemyInfo()
       ..live = 30
@@ -54,57 +53,57 @@ class GameConfig {
       ..size = Vector2(125.w, 100.w),
     EnemyInfo()
       ..live = 25
-      ..type = 0
+      ..type = 1
       ..score = 1
       ..imagePath = PlaneImages.enemy[1]
       ..size = Vector2(166.w, 70.w),
     EnemyInfo()
       ..live = 30
-      ..type = 0
+      ..type = 2
       ..score = 1
       ..imagePath = PlaneImages.enemy[2]
       ..size = Vector2(146.w, 60.w),
     EnemyInfo()
       ..live = 20
-      ..type = 0
+      ..type = 3
       ..score = 1
       ..imagePath = PlaneImages.enemy[3]
       ..size = Vector2(150.w, 100.w),
     EnemyInfo()
       ..live = 25
-      ..type = 0
+      ..type = 4
       ..score = 1
       ..imagePath = PlaneImages.enemy[4]
       ..size = Vector2(150.w, 75.w),
     EnemyInfo()
       ..live = 15
-      ..type = 1
+      ..type = 5
       ..score = 1
       ..imagePath = PlaneImages.enemy[5]
       ..size = Vector2(112.w, 60.w),
     EnemyInfo()
       ..live = 20
-      ..type = 1
+      ..type = 6
       ..score = 1
       ..imagePath = PlaneImages.enemy[6]
       ..size = Vector2(126.w, 100.w),
     EnemyInfo()
       ..live = 10
-      ..type = 1
+      ..type = 7
       ..score = 1
       ..imagePath = PlaneImages.enemy[7]
       ..size = Vector2(133.w, 111.w),
     EnemyInfo()
       ..live = 20
-      ..type = 2
+      ..type = 8
       ..score = 1
       ..imagePath = PlaneImages.enemy[8]
       ..size = Vector2(137.w, 100.w),
     EnemyInfo()
       ..live = 10
-      ..type = 2
+      ..type = 9
       ..score = 1
-      ..imagePath = PlaneImages.enemy[8]
+      ..imagePath = PlaneImages.enemy[9]
       ..size = Vector2(138.w, 102.w),
   ];
 }

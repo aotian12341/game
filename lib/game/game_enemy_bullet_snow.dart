@@ -4,29 +4,39 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:plane/game/game_view.dart';
 import 'package:plane/game/image_assets.dart';
 
 import 'game_config.dart';
 import 'game_controller.dart';
-import 'game_enemy_bullet.dart';
 
-class GameEnemyBulletSnow extends GameEnemyBullet {
+class GameEnemyBulletSnow extends PositionComponent
+    with HasGameRef<GameView>, CollisionCallbacks {
+  final Vector2 pos;
+
+  final double ang;
+
+  bool isStop = false;
+
+  final int score;
+
+  final int multiple;
+
   int count = 0;
 
   GameEnemyBulletSnow(
-      {required Vector2 pos,
-      required double a,
-      required int score,
-      required int multiple})
-      : super(pos: pos, a: a, score: score, multiple: multiple);
+      {required this.pos,
+      required this.ang,
+      required this.score,
+      required this.multiple});
 
   @override
   Future<void> onLoad() async {
-    final image = await Flame.images.load(PlaneImages.bulletEnemy[5]);
+    final image = await Flame.images.load(PlaneImages.bulletEnemy[6]);
 
-    size = Vector2(20.w, 50.w);
+    size = Vector2(20.w, 80.w);
 
-    angle = a!;
+    angle = ang;
 
     position = pos;
 
@@ -62,8 +72,8 @@ class GameEnemyBulletSnow extends GameEnemyBullet {
     }
     if (!isStop) {
       var vs = dt * speed; //GameConfig.enemyBulletSnowSpeed;
-      var vy = sin(pi / 2 - a!) * vs;
-      var vx = cos(pi / 2 - a!) * vs;
+      var vy = sin(pi / 2 - ang) * vs;
+      var vx = cos(pi / 2 - ang) * vs;
 
       position = Vector2(position.x + vx, position.y - vy);
     }
@@ -73,6 +83,18 @@ class GameEnemyBulletSnow extends GameEnemyBullet {
         position.x < 0 ||
         position.x > game.size.x) {
       removeFromParent();
+    }
+  }
+
+  @override
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollisionStart(intersectionPoints, other);
+
+    if (other.runtimeType.toString() == "GameHero") {
+      Future.delayed(const Duration(milliseconds: 0), () async {
+        removeFromParent();
+      });
     }
   }
 }

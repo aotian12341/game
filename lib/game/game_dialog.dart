@@ -8,13 +8,11 @@ import 'package:plane/game/game_controller.dart';
 import 'package:plane/game/game_sprite_btn.dart';
 import 'package:plane/game/game_view.dart';
 
-// 弹窗对话框
 class GameDialog extends PositionComponent with HasGameRef<GameView> {
   GameDialog({required this.onBack, required this.type});
 
   final Function onBack;
 
-  // type=0开始游戏，type=1暂停，type=2，没有分了要充值
   final int type;
 
   bool close = false;
@@ -55,7 +53,6 @@ class GameDialog extends PositionComponent with HasGameRef<GameView> {
     return super.onLoad();
   }
 
-  // 初始化充值提示框
   void initScore() async {
     final btnWidth = bgSize.x / 3;
     final btnHeight = btnWidth * 62 / 209;
@@ -88,7 +85,6 @@ class GameDialog extends PositionComponent with HasGameRef<GameView> {
         anchor: Anchor.center));
   }
 
-  // 初始化开始游戏提示框
   void initStart() async {
     final btnWidth = bgSize.x / 2;
     final btnHeight = btnWidth * 66 / 262;
@@ -106,7 +102,6 @@ class GameDialog extends PositionComponent with HasGameRef<GameView> {
     add(start);
   }
 
-  // 初始化暂停提示框
   void initStop() async {
     final btnWidth = bgSize.x / 3;
     final btnHeight = btnWidth * 62 / 209;
@@ -136,7 +131,6 @@ class GameDialog extends PositionComponent with HasGameRef<GameView> {
         anchor: Anchor.center));
   }
 
-  // 关闭对话框
   void closeDialog() {
     close = true;
   }
@@ -146,7 +140,6 @@ class GameDialog extends PositionComponent with HasGameRef<GameView> {
     action = 1;
   }
 
-  // 关闭动画
   @override
   void update(double dt) {
     super.update(dt);

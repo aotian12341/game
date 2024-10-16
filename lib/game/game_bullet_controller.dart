@@ -5,12 +5,12 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:plane/game/game_controller.dart';
+import 'package:plane/game/game_enemy_bullet.dart';
 
 import 'game_enemy_bullet_rotate.dart';
 import 'game_enemy_bullet_snow.dart';
-import 'game_enemy_bullet_stack.dart';
+import 'game_enemy_stack.dart';
 
-// 高级子弹控制器
 class GameBulletController {
   ///
   factory GameBulletController() => _getInstance();
@@ -36,10 +36,8 @@ class GameBulletController {
     this.game = game;
   }
 
-  // 子弹种类，用于做随机子弹
   final total = 4;
 
-  // 梅花形子弹
   void shootSnowflake(Vector2 pos, int score, int multiple) {
     List<Vector2> posList = [];
     const count = 6;
@@ -77,13 +75,15 @@ class GameBulletController {
 
     for (int i = 0; i < posList.length; i++) {
       bulletList.add(GameEnemyBulletSnow(
-          pos: posList[i], a: angleList[i], score: score, multiple: multiple));
+          pos: posList[i],
+          ang: angleList[i],
+          score: score,
+          multiple: multiple));
     }
 
     game.addAll(bulletList);
   }
 
-  // 扇形直道子弹
   void shootSector(Vector2 pos, int score, int multiple) async {
     shootSectorDetails(pos, score, multiple);
     await Future.delayed(const Duration(milliseconds: 100));
@@ -113,16 +113,18 @@ class GameBulletController {
 
     for (int i = 0; i < posList.length; i++) {
       bulletList.add(GameEnemyBulletSnow(
-          pos: posList[i], a: angleList[i], score: score, multiple: multiple));
+          pos: posList[i],
+          ang: angleList[i],
+          score: score,
+          multiple: multiple));
     }
 
     game.addAll(bulletList);
   }
 
-  // 扇形子弹
-  Future<List<GameEnemyBulletStack>> shootStack(
+  Future<List<GameEnemyStack>> shootStack(
       Vector2 pos, int score, int multiple) async {
-    final bulletList = <GameEnemyBulletStack>[];
+    final bulletList = <GameEnemyStack>[];
     Vector2 target = GameController().heroPos;
     bulletList.addAll(shootStackDetails(pos, target, score, multiple));
     await Future.delayed(const Duration(milliseconds: 100));
@@ -131,7 +133,7 @@ class GameBulletController {
     return bulletList;
   }
 
-  List<GameEnemyBulletStack> shootStackDetails(
+  List<GameEnemyStack> shootStackDetails(
       Vector2 pos, Vector2 target, int score, int multiple) {
     const count = 10;
     var k = (-(pos.y - target.y)) / (pos.x - target.x);
@@ -149,12 +151,12 @@ class GameBulletController {
 
     final temp = (maxA - minA) / count;
 
-    final bulletList = <GameEnemyBulletStack>[];
+    final bulletList = <GameEnemyStack>[];
 
     for (var i = 0; i < count; i++) {
       final angle = minA + temp * i + pi;
-      bulletList.add(GameEnemyBulletStack(
-          pos: pos, a: angle, score: score, multiple: multiple));
+      bulletList.add(GameEnemyStack(
+          pos: pos, ang: angle, score: score, multiple: multiple));
     }
 
     game.addAll(bulletList);
@@ -162,7 +164,6 @@ class GameBulletController {
     return bulletList;
   }
 
-  // 圆形子弹
   Future<List<GameEnemyBulletRotate>> shootRotate(
       Vector2 pos, int score, int multiple) async {
     const count = 10;
@@ -172,11 +173,11 @@ class GameBulletController {
 
     for (int i = 0; i < count * 2; i++) {
       final bullet = GameEnemyBulletRotate(
-          pos: pos, a: -pi + angle * i, score: score, multiple: multiple);
+          pos: pos, ang: -pi + angle * i, score: score, multiple: multiple);
       bulletList.add(bullet);
       game.add(bullet);
 
-      await Future.delayed(const Duration(milliseconds: 10));
+      await Future.delayed(const Duration(milliseconds: 5));
     }
 
     return bulletList;
