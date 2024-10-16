@@ -7,7 +7,6 @@ import 'package:plane/game/game_dialog.dart';
 import 'package:plane/game/game_sprite_btn.dart';
 import 'package:plane/game/game_view.dart';
 
-// 左上角返回按钮
 class GameStateBtn extends PositionComponent with HasGameRef<GameView> {
   @override
   Future<void> onLoad() async {
@@ -29,7 +28,6 @@ class GameStateBtn extends PositionComponent with HasGameRef<GameView> {
           GameController().stopGame();
         });
 
-    // 后来说不用暂停，就不添加到画布
     final stopBtn = SpriteBtn(
         pos: Vector2(80.w, (allHeight - btnHeight) / 2),
         s: Vector2(btnWidth / 2, btnHeight),

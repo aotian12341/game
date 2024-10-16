@@ -1,5 +1,10 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:plane/game/game_view.dart';
 import 'package:plane/game/plane.dart';
+
+import 'game/game_temp.dart';
 
 void main() {
   runApp(const MyApp());
@@ -91,6 +96,11 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(
+            width: 1,
+            height: 1,
+            child: GameWidget(game: GameTemp()),
+          ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

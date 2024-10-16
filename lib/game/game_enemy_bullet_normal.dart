@@ -6,26 +6,20 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:plane/game/game_enemy_bullet.dart';
 import 'package:plane/game/game_view.dart';
 
 import 'game_config.dart';
 import 'game_controller.dart';
 import 'image_assets.dart';
 
-class GameEnemyBulletNormal extends PositionComponent
-    with HasGameRef<GameView>, CollisionCallbacks {
-  final Vector2 pos;
-
-  double? a;
-
-  bool isStop = false;
-
-  final int score;
-
-  final int multiple;
-
+class GameEnemyBulletNormal extends GameEnemyBullet {
   GameEnemyBulletNormal(
-      {required this.pos, this.a, required this.score, required this.multiple});
+      {required Vector2 pos,
+      double? a,
+      required int score,
+      required int multiple})
+      : super(pos: pos, a: a, score: score, multiple: multiple);
 
   @override
   Future<void> onLoad() async {
@@ -71,33 +65,6 @@ class GameEnemyBulletNormal extends PositionComponent
 
     if (position.y > game.size.y) {
       removeFromParent();
-    }
-  }
-
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-
-    // canvas.save();
-    // canvas.drawRect(
-    //     Rect.fromLTWH(0, 0, size.x, size.y),
-    //     Paint()
-    //       ..color = Colors.green
-    //       ..style = PaintingStyle.stroke
-    //       ..strokeWidth = 5);
-    //
-    // canvas.restore();
-  }
-
-  @override
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
-    super.onCollisionStart(intersectionPoints, other);
-
-    if (other.runtimeType.toString() == "GameHero") {
-      Future.delayed(const Duration(milliseconds: 0), () async {
-        removeFromParent();
-      });
     }
   }
 }

@@ -13,8 +13,9 @@ import 'package:plane/game/game_hero_bullet.dart';
 import 'package:plane/game/sound_controller.dart';
 
 import 'game_enemy_bullet_big.dart';
+import 'game_enemy_bullet_rotate.dart';
 import 'game_enemy_bullet_snow.dart';
-import 'game_enemy_bullet_stack.dart';
+import 'game_enemy_stack.dart';
 import 'game_view.dart';
 import 'image_assets.dart';
 
@@ -210,13 +211,45 @@ class GameHero extends PositionComponent
 
     // 当玩家飞机被打中时，产生爆炸效果，扣除对应分数
 
-    if (other.runtimeType.toString() == "GameEnemyBullet" ||
-        other.runtimeType.toString() == "GameEnemyBulletBig" ||
-        other.runtimeType.toString() == "GameEnemyBulletSnow" ||
-        other.runtimeType.toString() == "GameEnemyBulletStack" ||
-        other.runtimeType.toString() == "GameEnemyBulletNormal") {
+    if (other.runtimeType.toString() == "GameEnemyBullet") {
       Future.delayed(const Duration(milliseconds: 0), () async {
         GameEnemyBullet bullet = other as GameEnemyBullet;
+
+        GameController()
+            .onHeroHit({"multiple": bullet.multiple, "score": bullet.score});
+
+        showBoom(bullet.position);
+      });
+    } else if (other.runtimeType.toString() == "GameEnemyBulletBig") {
+      Future.delayed(const Duration(milliseconds: 0), () async {
+        GameEnemyBulletBig bullet = other as GameEnemyBulletBig;
+
+        GameController()
+            .onHeroHit({"multiple": bullet.multiple, "score": bullet.score});
+
+        showBoom(bullet.position);
+      });
+    } else if (other.runtimeType.toString() == "GameEnemyBulletSnow") {
+      Future.delayed(const Duration(milliseconds: 0), () async {
+        GameEnemyBulletSnow bullet = other as GameEnemyBulletSnow;
+
+        GameController()
+            .onHeroHit({"multiple": bullet.multiple, "score": bullet.score});
+
+        showBoom(bullet.position);
+      });
+    } else if (other.runtimeType.toString() == "GameEnemyStack") {
+      Future.delayed(const Duration(milliseconds: 0), () async {
+        GameEnemyStack bullet = other as GameEnemyStack;
+
+        GameController()
+            .onHeroHit({"multiple": bullet.multiple, "score": bullet.score});
+
+        showBoom(bullet.position);
+      });
+    } else if (other.runtimeType.toString() == "GameEnemyBulletRotate") {
+      Future.delayed(const Duration(milliseconds: 0), () async {
+        GameEnemyBulletRotate bullet = other as GameEnemyBulletRotate;
 
         GameController()
             .onHeroHit({"multiple": bullet.multiple, "score": bullet.score});
@@ -226,13 +259,13 @@ class GameHero extends PositionComponent
     }
   }
 
-  // 被击中效果
   void showBoom(Vector2 hitPos) async {
     final boom = SpriteAnimationComponent(
         animation: SpriteAnimation.spriteList(boomSpriteList, stepTime: 0.01),
         size: Vector2(40.w, 40.w));
     boom.position = Vector2(hitPos.x - position.x, hitPos.y - position.y);
     add(boom);
+    SoundController().playHeroHit();
     await Future.delayed(const Duration(milliseconds: 300));
     boom.removeFromParent();
   }

@@ -4,24 +4,30 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:plane/game/game_view.dart';
 import 'package:plane/game/image_assets.dart';
 
 import 'game_config.dart';
 import 'game_controller.dart';
-import 'game_enemy_bullet.dart';
 
-class GameEnemyBulletBig extends GameEnemyBullet {
+class GameEnemyBulletBig extends PositionComponent
+    with HasGameRef<GameView>, CollisionCallbacks {
+  final Vector2 pos;
   final Vector2 target;
+
+  GameEnemyBulletBig(
+      {required this.pos,
+      required this.target,
+      required this.score,
+      required this.multiple});
 
   double moveAngle = -pi;
 
-  GameEnemyBulletBig(
-      {required Vector2 pos,
-      double? a,
-      required this.target,
-      required int score,
-      required int multiple})
-      : super(pos: pos, a: a, score: score, multiple: multiple);
+  bool isStop = false;
+
+  final int score;
+
+  final int multiple;
 
   @override
   Future<void> onLoad() async {
@@ -77,6 +83,18 @@ class GameEnemyBulletBig extends GameEnemyBullet {
         position.x > game.size.x ||
         position.x < 0) {
       removeFromParent();
+    }
+  }
+
+  @override
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollisionStart(intersectionPoints, other);
+
+    if (other.runtimeType.toString() == "GameHero") {
+      Future.delayed(const Duration(milliseconds: 0), () async {
+        removeFromParent();
+      });
     }
   }
 }

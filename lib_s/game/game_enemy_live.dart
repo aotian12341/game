@@ -2,7 +2,6 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:plane/game/game_view.dart';
 
-// 生命条
 class GameEnemyLive extends PositionComponent with HasGameRef<GameView> {
   final Vector2 s;
   final Vector2 pos;

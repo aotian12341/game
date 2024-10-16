@@ -23,6 +23,7 @@ class SoundController {
   AudioPlayer shootPlayer = AudioPlayer();
 
   List<AudioPlayer> shootList = [];
+  List<AudioPlayer> hitList = [];
 
   // 私有构造函数
   SoundController._internal() {
@@ -30,6 +31,7 @@ class SoundController {
   }
 
   int shootIndex = 0;
+  int hitIndex = 0;
 
   void init() {
     // boomPlayer = AudioPlayer();
@@ -43,6 +45,14 @@ class SoundController {
       temp.setSource(AssetSource("sounds/planeshoot0.mp3"));
       temp.setVolume(GameConfig.heroBulletVolume);
       shootList.add(temp);
+      final hit = AudioPlayer();
+      hit.setSource(AssetSource("sounds/hero_hit.mp3"));
+      hit.setVolume(GameConfig.heroBulletVolume);
+      hitList.add(hit);
+      final hit2 = AudioPlayer();
+      hit2.setSource(AssetSource("sounds/hero_hit.mp3"));
+      hit2.setVolume(GameConfig.heroBulletVolume);
+      hitList.add(hit2);
     }
   }
 
@@ -75,6 +85,14 @@ class SoundController {
     shootIndex += 1;
     if (shootIndex == shootList.length - 1) {
       shootIndex = 0;
+    }
+  }
+
+  void playHeroHit() {
+    hitList[hitIndex].resume();
+    hitIndex += 1;
+    if (hitIndex == hitList.length - 1) {
+      hitIndex = 0;
     }
   }
 }

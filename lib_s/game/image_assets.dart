@@ -6,8 +6,8 @@ class PlaneImages {
     "ui/bg/bg8.jpg",
     "ui/bg/bg_hei_0.jpg",
     "ui/bg/bg12.jpg",
-    // "ui/bg/bg5.jpg",
-    // "ui/bg/bg6.jpg",
+    "ui/bg/bg1.jpg",
+    "ui/bg/bg6.jpg",
     // "ui/bg/bg7.jpg",
     // "ui/bg/bg8.jpg",
     // "ui/bg/bg9.jpg",
@@ -21,9 +21,11 @@ class PlaneImages {
     "ui/bg/game_bg_item.png",
     "ui/bg/game_bg_item2.png",
     "ui/bg/bg_12_item.png",
-    "ui/bg/map01-04.png",
+    "ui/bg/map01-08.png",
     "ui/bg/game_bg_item3.png",
-    "ui/bg/game_bg_item4.png",
+    "ui/bg/game_bg_item6.png",
+    "ui/bg/game_bg_item5.png",
+    "ui/bg/game_bg_item6.png",
   ];
 
   static List hero = [
@@ -77,7 +79,8 @@ class PlaneImages {
     "enemy/bullet_big.png",
     "enemy/bulletSLizi_0.png",
     "enemy/bullet-snowflake.png",
-    "enemy/bullet_enemy_boss2.png"
+    "enemy/bullet_enemy_boss2.png",
+    "enemy/bullet-r02-3.png"
   ];
 
   static List boom = [

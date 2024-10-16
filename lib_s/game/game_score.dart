@@ -6,13 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:plane/game/game_controller.dart';
 import 'package:plane/game/game_view.dart';
 
-// 右上角分数
 class GameScore extends PositionComponent with HasGameRef<GameView> {
   late SpriteSheet numbers;
 
   @override
   Future<void> onLoad() async {
-    // 分数图片
     numbers = SpriteSheet.fromColumnsAndRows(
         image: await Flame.images.load("ui/ranking-num02.png"),
         columns: 10,
@@ -27,13 +25,11 @@ class GameScore extends PositionComponent with HasGameRef<GameView> {
 
     updateScore();
 
-    //设置层级
     priority = 998;
 
     return super.onLoad();
   }
 
-  // 更新分数
   void updateScore() {
     final temp = "${GameController().score}".split("");
     final text = <SpriteComponent>[];
