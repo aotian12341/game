@@ -295,9 +295,12 @@ class GameEnemy extends PositionComponent
     super.onCollisionStart(intersectionPoints, other);
 
     if (other.runtimeType.toString() == "GameHeroBullet") {
-      showBoom((other as GameHeroBullet).position);
-      GameController().onEnemyBoom(
-          {"id": enemyInfo.id, "score": enemyInfo.score * multiple});
+      final bullet = other as GameHeroBullet;
+      showBoom(bullet.position);
+      if (bullet.isBullet ?? false) {
+        GameController()
+            .onEnemyBoom({"id": enemyInfo.id, "score": enemyInfo.score});
+      }
     }
   }
 

@@ -121,6 +121,7 @@ class GameController {
 
   // 敌机爆炸触发
   void onEnemyBoom(enemy) {
+    enemy['score'] = (enemy['score'] as int) * multipleList[planeIndex];
     GameServer().shootEnemy(enemy);
   }
 
@@ -177,6 +178,8 @@ class GameController {
         if (info['id'] == enemy.enemyInfo.id) {
           if (!enemy.isDeath) {
             enemy.boom();
+            enemyList.remove(enemy);
+            break;
           }
         }
       }

@@ -5,6 +5,7 @@ import 'package:plane/game/game_view.dart';
 import 'package:plane/game/plane.dart';
 
 import 'game/game_temp.dart';
+import 'mahjong/mahjong.dart';
 
 void main() {
   runApp(const MyApp());
@@ -118,25 +119,27 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               )
             ],
-          )
+          ),
+          // Row(
+          //   crossAxisAlignment: CrossAxisAlignment.center,
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     SizedBox(
+          //       width: 200,
+          //       child: OutlinedButton(
+          //         onPressed: () {
+          //           Navigator.push(context,
+          //               MaterialPageRoute(builder: (_) => const Mahjong()));
+          //         },
+          //         child: const Center(
+          //           child: Text("麻将"),
+          //         ),
+          //       ),
+          //     )
+          //   ],
+          // )
         ],
       ),
-      // body: ScreenUtilInit(
-      //   designSize: const Size(375, 800),
-      //   minTextAdapt: true,
-      //   splitScreenMode: true,
-      //   child: Container(
-      //     color: Colors.red,
-      //     width: MediaQuery.of(context).size.width,
-      //     height: MediaQuery.of(context).size.height,
-      //     child: GameWidget(game: GameView()),
-      //   ),
-      // ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

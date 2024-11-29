@@ -1,6 +1,6 @@
 import 'dart:math';
-
 import 'package:audioplayers/audioplayers.dart';
+
 import 'package:plane/game/game_config.dart';
 
 class SoundController {
@@ -16,14 +16,9 @@ class SoundController {
     return _instance!;
   }
 
-  AudioPlayer player = AudioPlayer();
-
-  AudioPlayer boomPlayer = AudioPlayer();
-
-  AudioPlayer shootPlayer = AudioPlayer();
-
-  List<AudioPlayer> shootList = [];
-  List<AudioPlayer> hitList = [];
+  AudioPlayer? player;
+  // List<AudioPlayer> shootList = [];
+  // List<AudioPlayer> hitList = [];
 
   // 私有构造函数
   SoundController._internal() {
@@ -40,59 +35,90 @@ class SoundController {
     // shootPlayer.setSource(AssetSource("sounds/planeshoot0.mp3"));
     // boomPlayer.setVolume(GameConfig.enemyBoomVolume);
     // shootPlayer.setVolume(GameConfig.heroBulletVolume);
-    for (var i = 0; i < 10; i++) {
-      final temp = AudioPlayer();
-      temp.setSource(AssetSource("sounds/planeshoot0.mp3"));
-      temp.setVolume(GameConfig.heroBulletVolume);
-      shootList.add(temp);
-      final hit = AudioPlayer();
-      hit.setSource(AssetSource("sounds/hero_hit.mp3"));
-      hit.setVolume(GameConfig.heroBulletVolume);
-      hitList.add(hit);
-      final hit2 = AudioPlayer();
-      hit2.setSource(AssetSource("sounds/hero_hit.mp3"));
-      hit2.setVolume(GameConfig.heroBulletVolume);
-      hitList.add(hit2);
-    }
+    // for (var i = 0; i < 10; i++) {
+    //   final temp = AudioPlayer();
+    //   temp.setSource(AssetSource("sounds/planeshoot0.mp3"));
+    //   temp.setVolume(GameConfig.heroBulletVolume / 2);
+    //   shootList.add(temp);
+    // }
+    //
+    // for (var i = 0; i < 20; i++) {
+    //   final hit = AudioPlayer();
+    //   hit.setSource(AssetSource("sounds/hero_hit.mp3"));
+    //   hit.setVolume(GameConfig.heroBulletVolume / 2);
+    //   hitList.add(hit);
+    // }
   }
 
-  void playBg() {
+  void playBg() async {
     final bgList = [
       "sounds/gamebg0.mp3",
       "sounds/gamebg1.mp3",
       "sounds/menubg.mp3"
     ];
     final index = Random().nextInt(3);
+
     player = AudioPlayer();
-    player.stop();
-    player.setReleaseMode(ReleaseMode.loop);
-    player.play(AssetSource(bgList[index]), volume: GameConfig.bgMusicVolume);
+    player!.stop();
+    player!.setReleaseMode(ReleaseMode.loop);
+    player!.play(AssetSource(bgList[index]), volume: GameConfig.bgMusicVolume);
   }
 
   void stopBg() {
-    player.stop();
+    player?.stop();
   }
 
   void playBoom() {
-    // boomPlayer.stop();
-    // boomPlayer.resume();
     final temp = AudioPlayer();
-    temp.play(AssetSource("sounds/blast0.mp3"), volume: 1.0);
+    temp.play(
+      AssetSource("sounds/blast0.mp3"),
+      volume: GameConfig.heroBulletVolume,
+    );
   }
 
   void playShoot() {
-    shootList[shootIndex].resume();
-    shootIndex += 1;
-    if (shootIndex == shootList.length - 1) {
-      shootIndex = 0;
-    }
+    final temp = AudioPlayer();
+    temp
+        .play(
+      AssetSource("sounds/planeshoot0.mp3"),
+      volume: GameConfig.heroBulletVolume,
+    )
+        .then((value) {
+      // temp.release();
+    });
+    // temp.setSource(AssetSource("sounds/planeshoot0.mp3"));
+    // temp.setVolume(GameConfig.heroBulletVolume / 2);
+    // temp.resume();
+    // shootList[shootIndex].resume();
+    // shootIndex += 1;
+    // if (shootIndex == shootList.length - 1) {
+    //   shootIndex = 0;
+    // }
+    // if(shootIndex)
   }
 
   void playHeroHit() {
-    hitList[hitIndex].resume();
-    hitIndex += 1;
-    if (hitIndex == hitList.length - 1) {
-      hitIndex = 0;
-    }
+    final temp = AudioPlayer();
+    temp.play(
+      AssetSource("sounds/hero_hit.mp3"),
+      volume: GameConfig.heroBulletVolume / 3,
+    );
+    // hitList[hitIndex].resume();
+    // hitIndex += 1;
+    //
+    // if (hitIndex == hitList.length - 1) {
+    //   hitIndex = 0;
+    // }
+    //
+    // final hit = AudioPlayer();
+    // hit.setSource(AssetSource("sounds/hero_hit.mp3"));
+    // hit.setVolume(GameConfig.heroBulletVolume / 2);
+    // if (hitIndex == 0) {
+    //   hitList[hitList.length - 1].release();
+    //   hitList[hitList.length - 1] = hit;
+    // } else {
+    //   hitList[hitIndex - 1].release();
+    //   hitList[hitIndex - 1] = hit;
+    // }
   }
 }

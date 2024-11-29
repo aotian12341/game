@@ -21,11 +21,17 @@ class GameHeroBullet extends PositionComponent
 
   final Vector2 s;
 
+  final bool? isBullet;
+
   double? a;
   bool isStop = false;
 
   GameHeroBullet(
-      {required this.pos, this.a, required this.image, required this.s});
+      {required this.pos,
+      this.a,
+      this.isBullet,
+      required this.image,
+      required this.s});
 
   @override
   Future<void> onLoad() async {

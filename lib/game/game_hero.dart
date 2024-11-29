@@ -122,6 +122,7 @@ class GameHero extends PositionComponent
       final s = Vector2(15.w, 25.w);
       bulletList.add(GameHeroBullet(
           pos: Vector2(position.x + size.x / 2, position.y),
+          isBullet: true,
           image: image,
           s: s));
     } else if (GameController().planeIndex >= 5 &&
@@ -131,6 +132,7 @@ class GameHero extends PositionComponent
       final s = Vector2(10.w, 55.w);
       bulletList.add(GameHeroBullet(
           pos: Vector2(position.x + size.x / 3, position.y),
+          isBullet: true,
           image: image,
           s: s));
       bulletList.add(GameHeroBullet(
@@ -158,6 +160,7 @@ class GameHero extends PositionComponent
       bulletList.add(GameHeroBullet(
           pos: Vector2(position.x + size.x * 2 / 4, position.y),
           image: image2,
+          isBullet: true,
           s: s2));
     } else {
       final image = await Flame.images
@@ -176,6 +179,7 @@ class GameHero extends PositionComponent
       final s2 = Vector2(14.w, 40.w);
       bulletList.add(GameHeroBullet(
           pos: Vector2(position.x + size.x * 2 / 4, position.y - 10.w),
+          isBullet: true,
           image: image2,
           s: s2));
 
